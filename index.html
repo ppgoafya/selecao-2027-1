@@ -96,6 +96,27 @@ a{color:inherit}
 }
 @media (prefers-reduced-motion:reduce){.live-tag i{animation:none}}
 
+
+/* CURSO DE IA */
+.ia{position:relative;overflow:hidden;color:#fff;padding:72px 0;background:linear-gradient(180deg,#170a3a 0%,#3b0a4f 100%)}
+.ia[hidden]{display:none}
+.ia .wrap{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:44px;align-items:center}
+.ia .kicker{color:#ff9ccb}
+.ia h2{font-size:clamp(1.9rem,3.8vw,2.8rem);margin-top:10px}
+.ia h2 span{display:block;margin-top:8px;font-family:Inter,sans-serif;font-size:1.1rem;font-weight:600;letter-spacing:0;color:#ff9ccb}
+.ia p{color:#f0e6f5;max-width:52ch}
+.ia-when{display:grid;gap:8px;margin:20px 0 0;padding:16px 0;border-block:1px solid rgba(255,255,255,.18)}
+.ia-when span b{font-size:1.05rem}
+.ia .btn{margin-top:22px}
+.ia-note{margin:10px 0 0;font-size:.85rem;opacity:.85}
+.ia-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.ia-cards img{display:block;width:100%;height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.22);box-shadow:0 24px 60px -24px rgba(10,0,30,.8)}
+@media (max-width:900px){
+  .ia .wrap{grid-template-columns:1fr;gap:30px}
+  .ia-cards{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;padding-bottom:10px;-webkit-overflow-scrolling:touch}
+  .ia-cards img{flex:0 0 82%;scroll-snap-align:center}
+}
+
 /* FUNDO DINAMICO */
 .fx{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:0}
 .aurora{position:absolute;inset:-20%;z-index:0;pointer-events:none;filter:blur(40px);opacity:.55}
@@ -207,6 +228,7 @@ footer a{color:#fff}
   <div class="wrap">
     <a class="brand" href="#topo"><b>PPGO</b><span>Afya UNIGRANRIO</span></a>
     <ul>
+      <li><a href="#curso-ia">Curso de IA</a></li>
       <li><a href="#cursos">Cursos</a></li>
       <li><a href="#cronograma">Cronograma</a></li>
       <li><a href="#inscricao">Como se inscrever</a></li>
@@ -255,6 +277,28 @@ footer a{color:#fff}
 </header>
 
 <main>
+<section class="ia" id="curso-ia" aria-labelledby="ia-titulo">
+  <div class="wrap">
+    <div>
+      <div class="kicker">Curso presencial · Duque de Caxias</div>
+      <h2 id="ia-titulo">Curso de IA no PPGO<span>Ferramentas Digitais e IA Aplicadas à Análise de Dados</span></h2>
+      <p>Duas aulas para usar a inteligência artificial na pesquisa com método e senso crítico. Para mestrandos, doutorandos, graduandos e candidatos ao processo seletivo, com o Prof. Fabiano L. Heggendorn.</p>
+      <div class="ia-when">
+        <span><b>Aula 1 · 26/11/2026</b> · quinta-feira, 13h às 17h</span>
+        <span><b>Aula 2 · 10/12/2026</b> · quinta-feira, 13h às 17h</span>
+        <span><b>Local</b> · PPGO, Afya UNIGRANRIO, Campus Duque de Caxias</span>
+      </div>
+      <a class="btn btn-primary" href="curso-ia/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>
+        Inscrever-se no curso</a>
+      <p class="ia-note">Abre o formulário de inscrição em outra aba.</p>
+    </div>
+    <div class="ia-cards">
+      <img src="assets/curso-ia-card1.jpg" srcset="assets/curso-ia-card1-sm.jpg 540w, assets/curso-ia-card1.jpg 1080w" sizes="(max-width:900px) 82vw, 34vw" width="1080" height="1350" alt="Curso de IA no PPGO: datas 26/11 e 10/12, das 13h às 17h, disciplina Ferramentas Digitais e IA Aplicadas à Análise de Dados" loading="lazy">
+      <img src="assets/curso-ia-card2.jpg" srcset="assets/curso-ia-card2-sm.jpg 540w, assets/curso-ia-card2.jpg 1080w" sizes="(max-width:900px) 82vw, 34vw" width="1080" height="1350" alt="Temas das aulas: Aula 1 Claude na pesquisa científica; Aula 2 Mapa de IA para a pesquisa" loading="lazy">
+    </div>
+  </div>
+</section>
 <section id="cursos">
   <div class="wrap">
     <div class="kicker">Nossos cursos</div>
@@ -420,6 +464,8 @@ footer a{color:#fff}
   else{dot.classList.add('closed');txt.textContent='Inscrições encerradas em 12/02/2027';}
   var live=document.getElementById('live');
   if(live && new Date()>new Date('2026-11-25T20:30:00-03:00')){live.hidden=true;}
+  var ia=document.getElementById('curso-ia');
+  if(ia && new Date()>new Date('2026-12-10T18:00:00-03:00')){ia.hidden=true;}
   var items=document.querySelectorAll('#timeline li'), marked=false;
   items.forEach(function(li){
     var s=li.dataset.start.split('-'), e=li.dataset.end.split('-');
