@@ -75,7 +75,7 @@ fieldset{border:0;margin:0 0 18px;padding:0}
 
 <main>
   <div class="wrap">
-    <form class="card" id="form" novalidate>
+    <form class="card" id="form" method="POST" action="https://formsubmit.co/fabiano.heggendor@afya.com.br" novalidate>
       <h2>Preencha seus dados</h2>
       <p class="lead">Campos com <span class="req">*</span> são obrigatórios. Enviaremos uma confirmação para o e-mail informado.</p>
 
@@ -109,8 +109,8 @@ fieldset{border:0;margin:0 0 18px;padding:0}
 
       <fieldset>
         <legend>Aulas que pretende participar <span class="req">*</span></legend>
-        <label class="opt"><input type="checkbox" name="Aulas" value="Aula 1 - 26/11"><span>Aula 1 · 26/11<small>Claude na pesquisa científica</small></span></label>
-        <label class="opt"><input type="checkbox" name="Aulas" value="Aula 2 - 10/12"><span>Aula 2 · 10/12<small>Mapa de IA para a pesquisa e análises acadêmicas</small></span></label>
+        <label class="opt"><input type="checkbox" class="aula" value="Aula 1 - 26/11"><span>Aula 1 · 26/11<small>Claude na pesquisa científica</small></span></label>
+        <label class="opt"><input type="checkbox" class="aula" value="Aula 2 - 10/12"><span>Aula 2 · 10/12<small>Mapa de IA para a pesquisa e análises acadêmicas</small></span></label>
       </fieldset>
 
       <div class="field">
@@ -118,6 +118,11 @@ fieldset{border:0;margin:0 0 18px;padding:0}
           <span>Autorizo o uso dos dados informados apenas para a organização do curso e o contato do PPGO (LGPD). <span class="req">*</span></span></label>
       </div>
 
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_next" value="https://ppgoafya.github.io/selecao-2027-1/curso-ia/obrigado.html">
+      <input type="hidden" name="_subject" id="subj" value="Inscrição Curso de IA PPGO">
+      <input type="hidden" name="_autoresponse" value="Recebemos sua inscrição no Curso de IA do PPGO (Ferramentas Digitais e IA Aplicadas à Análise de Dados). Aulas presenciais em 26/11 e 10/12/2026, das 13h às 17h, na Afya UNIGRANRIO, Campus Duque de Caxias. Até lá!">
+      <input type="hidden" name="Aulas" id="aulas">
       <!-- campo isca anti-spam: deve ficar vazio -->
       <div class="hp" aria-hidden="true"><label>Não preencha <input type="text" name="_honey" tabindex="-1" autocomplete="off"></label></div>
 
@@ -133,49 +138,18 @@ fieldset{border:0;margin:0 0 18px;padding:0}
 (function(){
   var DEST='fabiano.heggendor@afya.com.br';
   var form=document.getElementById('form'), btn=document.getElementById('enviar');
-  var ok=document.getElementById('ok'), err=document.getElementById('err');
-  function show(el,t){ok.hidden=err.hidden=true;el.textContent=t;el.hidden=false;el.scrollIntoView({behavior:'smooth',block:'nearest'});}
+  var err=document.getElementById('err'), ok=document.getElementById('ok');
+  function bad(t){ok.hidden=true;err.textContent=t;err.hidden=false;err.scrollIntoView({behavior:'smooth',block:'nearest'});}
   form.addEventListener('submit',function(e){
-    e.preventDefault();
-    var aulas=[].slice.call(form.querySelectorAll('input[name="Aulas"]:checked')).map(function(i){return i.value});
-    if(!form.Nome.value.trim()||!form.email.value.trim()||!form.Telefone.value.trim()||!form.Perfil.value){
-      return show(err,'Preencha nome, e-mail, telefone e perfil.');}
-    if(!/^\S+@\S+\.\S+$/.test(form.email.value.trim())){return show(err,'Informe um e-mail válido.');}
-    if(!aulas.length){return show(err,'Escolha ao menos uma aula.');}
-    if(!document.getElementById('lgpd').checked){return show(err,'É necessário autorizar o uso dos dados (LGPD).');}
-    if(form._honey.value){return;}
-    var data={
-      'Nome':form.Nome.value.trim(),
-      'email':form.email.value.trim(),
-      'Telefone':form.Telefone.value.trim(),
-      'Perfil':form.Perfil.value,
-      'Instituição':form['Instituição'].value.trim()||'—',
-      'Aulas':aulas.join(' | '),
-      '_subject':'Inscrição Curso de IA PPGO – '+form.Nome.value.trim(),
-      '_template':'table',
-      '_autoresponse':'Recebemos sua inscrição no Curso de IA do PPGO (Ferramentas Digitais e IA Aplicadas à Análise de Dados). Aulas presenciais em 26/11 e 10/12/2026, das 13h às 17h, na Afya UNIGRANRIO, Campus Duque de Caxias. Até lá!',
-      '_replyto':form.email.value.trim(),
-      '_honey':''
-    };
+    var aulas=[].slice.call(form.querySelectorAll('input.aula:checked')).map(function(i){return i.value});
+    if(!form.Nome.value.trim()||!form.email.value.trim()||!form.Telefone.value.trim()||!form.Perfil.value){e.preventDefault();return bad('Preencha nome, e-mail, telefone e perfil.');}
+    if(!/^\S+@\S+\.\S+$/.test(form.email.value.trim())){e.preventDefault();return bad('Informe um e-mail válido.');}
+    if(!aulas.length){e.preventDefault();return bad('Escolha ao menos uma aula.');}
+    if(!document.getElementById('lgpd').checked){e.preventDefault();return bad('É necessário autorizar o uso dos dados (LGPD).');}
+    if(form._honey.value){e.preventDefault();return;}
+    document.getElementById('aulas').value=aulas.join(' | ');
+    document.getElementById('subj').value='Inscrição Curso de IA PPGO – '+form.Nome.value.trim();
     btn.disabled=true; btn.textContent='Enviando…';
-    fetch('https://formsubmit.co/ajax/'+DEST,{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify(data)
-    }).then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j}})})
-    .then(function(res){
-      if(res.ok && String(res.j.success)!=='false'){
-        form.reset(); ok.hidden=true;
-        show(ok,'Inscrição enviada! Nos vemos em 26/11 e 10/12, das 13h às 17h.');
-      } else {var er=new Error('falha');er.detail=(res.j&&res.j.message)||'';throw er;}
-    }).catch(function(ex){
-      var body='Nome: '+data['Nome']+'\nE-mail: '+data.email+'\nTelefone: '+data['Telefone']+'\nPerfil: '+data['Perfil']+'\nInstituição: '+data['Instituição']+'\nAulas: '+data['Aulas'];
-      var href='mailto:'+DEST+'?subject='+encodeURIComponent(data._subject)+'&body='+encodeURIComponent(body);
-      err.textContent='Não foi possível enviar automaticamente'+(ex&&ex.detail?' ('+ex.detail+')':'')+'. ';
-      var l=document.createElement('a');l.href=href;l.textContent='Clique aqui para enviar a inscrição pelo seu aplicativo de e-mail';l.style.fontWeight='700';
-      err.appendChild(l);err.appendChild(document.createTextNode('.'));
-      err.hidden=false;ok.hidden=true;err.scrollIntoView({behavior:'smooth',block:'nearest'});
-    }).then(function(){btn.disabled=false;btn.textContent='Enviar inscrição';});
   });
 })();
 </script>
