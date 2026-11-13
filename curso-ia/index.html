@@ -136,7 +136,9 @@ fieldset{border:0;margin:0 0 18px;padding:0}
 
 <script>
 (function(){
-  var DEST="fabianohegg@gmail.com";
+  // Cole aqui a URL do Google Apps Script (termina em /exec). Enquanto estiver vazia, usa o FormSubmit.
+  var APPS_URL='';
+  var DEST='fabianohegg@gmail.com';
   var form=document.getElementById('form'), btn=document.getElementById('enviar');
   var err=document.getElementById('err'), ok=document.getElementById('ok');
   function bad(t){ok.hidden=true;err.textContent=t;err.hidden=false;err.scrollIntoView({behavior:'smooth',block:'nearest'});}
@@ -150,6 +152,19 @@ fieldset{border:0;margin:0 0 18px;padding:0}
     document.getElementById('aulas').value=aulas.join(' | ');
     document.getElementById('subj').value='Inscrição Curso de IA PPGO – '+form.Nome.value.trim();
     btn.disabled=true; btn.textContent='Enviando…';
+    if(!APPS_URL){return;} /* envio tradicional via FormSubmit */
+    e.preventDefault();
+    var d={Nome:form.Nome.value.trim(),email:form.email.value.trim(),Telefone:form.Telefone.value.trim(),Perfil:form.Perfil.value,'Instituição':form['Instituição'].value.trim(),Aulas:aulas.join(' | '),_honey:''};
+    fetch(APPS_URL,{method:'POST',mode:'no-cors',body:new URLSearchParams(d)})
+    .then(function(){location.href='obrigado.html';})
+    .catch(function(){
+      btn.disabled=false;btn.textContent='Enviar inscrição';
+      var body='Nome: '+d.Nome+'\nE-mail: '+d.email+'\nTelefone: '+d.Telefone+'\nPerfil: '+d.Perfil+'\nInstituição: '+d['Instituição']+'\nAulas: '+d.Aulas;
+      err.textContent='Não foi possível enviar automaticamente. ';
+      var l=document.createElement('a');l.href='mailto:'+DEST+'?subject='+encodeURIComponent('Inscrição Curso de IA PPGO – '+d.Nome)+'&body='+encodeURIComponent(body);
+      l.textContent='Clique aqui para enviar pelo seu aplicativo de e-mail';l.style.fontWeight='700';
+      err.appendChild(l);err.appendChild(document.createTextNode('.'));err.hidden=false;ok.hidden=true;
+    });
   });
 })();
 </script>
