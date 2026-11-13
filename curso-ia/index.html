@@ -167,9 +167,14 @@ fieldset{border:0;margin:0 0 18px;padding:0}
       if(res.ok && String(res.j.success)!=='false'){
         form.reset(); ok.hidden=true;
         show(ok,'Inscrição enviada! Nos vemos em 26/11 e 10/12, das 13h às 17h.');
-      } else {throw new Error(res.j&&res.j.message||'falha');}
-    }).catch(function(){
-      show(err,'Não foi possível enviar agora. Tente novamente ou escreva para '+DEST+' com seu nome, telefone, perfil e as aulas desejadas.');
+      } else {var er=new Error('falha');er.detail=(res.j&&res.j.message)||'';throw er;}
+    }).catch(function(ex){
+      var body='Nome: '+data['Nome']+'\nE-mail: '+data.email+'\nTelefone: '+data['Telefone']+'\nPerfil: '+data['Perfil']+'\nInstituição: '+data['Instituição']+'\nAulas: '+data['Aulas'];
+      var href='mailto:'+DEST+'?subject='+encodeURIComponent(data._subject)+'&body='+encodeURIComponent(body);
+      err.textContent='Não foi possível enviar automaticamente'+(ex&&ex.detail?' ('+ex.detail+')':'')+'. ';
+      var l=document.createElement('a');l.href=href;l.textContent='Clique aqui para enviar a inscrição pelo seu aplicativo de e-mail';l.style.fontWeight='700';
+      err.appendChild(l);err.appendChild(document.createTextNode('.'));
+      err.hidden=false;ok.hidden=true;err.scrollIntoView({behavior:'smooth',block:'nearest'});
     }).then(function(){btn.disabled=false;btn.textContent='Enviar inscrição';});
   });
 })();
