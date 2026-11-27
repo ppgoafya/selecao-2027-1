@@ -97,6 +97,18 @@ a{color:inherit}
 @media (prefers-reduced-motion:reduce){.live-tag i{animation:none}}
 
 
+/* CARD DA LIVE */
+.live-sec{color:#fff;padding:64px 0;background:#170a3a}
+.live-sec[hidden]{display:none}
+.live-sec .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);gap:44px;align-items:center}
+.live-sec .kicker{color:#ff9ccb}
+.live-sec h2{font-size:clamp(1.9rem,3.8vw,2.8rem);margin-top:10px}
+.live-sec h2 span{display:block;margin-top:8px;font-family:Inter,sans-serif;font-size:1.1rem;font-weight:600;letter-spacing:0;color:#ff9ccb}
+.live-sec p{color:#f0e6f5;max-width:52ch}
+.live-sec .btn{margin-top:10px}
+.live-sec img{display:block;width:100%;height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.22);box-shadow:0 24px 60px -24px rgba(10,0,30,.8)}
+@media (max-width:900px){.live-sec .wrap{grid-template-columns:1fr;gap:30px}}
+
 /* CURSO DE IA */
 .ia{position:relative;overflow:hidden;color:#fff;padding:72px 0;background:linear-gradient(180deg,#170a3a 0%,#3b0a4f 100%)}
 .ia[hidden]{display:none}
@@ -263,12 +275,12 @@ footer a{color:#fff}
       <div class="fact"><b>10 vagas</b><span>Doutorado</span></div>
       <div class="fact"><b>12/02/2027</b><span>Último dia de inscrição</span></div>
     </div>
-    <aside class="live-card" id="live" aria-label="Live sobre Mestrado e Doutorado">
-      <span class="live-tag"><i aria-hidden="true"></i>AO VIVO · 25/11</span>
-      <h2>Mestrado e Doutorado<span>Pesquisas que abrem portas</span></h2>
-      <p class="live-who">Conversa com o Prof. Dr. Fabiano Heggendorn, coordenador do PPGO, e a Profa. Dra. Sabrina Brasil. Tire suas dúvidas ao vivo.</p>
-      <div class="live-when"><span><b>25 de novembro</b> · quarta-feira</span><span><b>18h</b> · online</span></div>
-      <a class="btn btn-primary" href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_MDI2MjZlZjQtMjhiOS00MWU1LWIxNzMtNTIwY2Y3M2ZjZmVi%40thread.v2/0?context=%7b%22Tid%22%3a%2260bcece8-eb6b-494e-a607-e83fcdcef333%22%2c%22Oid%22%3a%229638b253-92d5-454b-ba5f-1e48c051e5b5%22%7d" target="_blank" rel="noopener">
+    <aside class="live-card" id="live" aria-label="Live de 1º de dezembro">
+      <span class="live-tag"><i aria-hidden="true"></i>AO VIVO · 01/12</span>
+      <h2>Muito além da sala de aula<span>Ciência, prática e oportunidades na Pós-graduação em Odontologia</span></h2>
+      <p class="live-who">Conversa com a Profa. Dra. Caren Vilela e a Profa. Dra. Isabela Rôças, docentes do PPGO. Tire suas dúvidas ao vivo.</p>
+      <div class="live-when"><span><b>1º de dezembro</b> · terça-feira</span><span><b>18h</b> · online</span></div>
+      <a class="btn btn-primary" href="https://teams.microsoft.com/meet/2492734985442316?p=iF8RjO2GB6PkTuUnWB" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 7l-7 5 7 5z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
         Entrar na live</a>
       <p class="live-note">A live acontece pelo Microsoft Teams.</p>
@@ -277,6 +289,20 @@ footer a{color:#fff}
 </header>
 
 <main>
+<section class="live-sec" id="live-card" aria-labelledby="live-titulo">
+  <div class="wrap">
+    <div>
+      <div class="kicker">Live · Mestrado e Doutorado</div>
+      <h2 id="live-titulo">Muito além da sala de aula<span>Ciência, prática e oportunidades na Pós-graduação em Odontologia</span></h2>
+      <p><b>Terça-feira, 1º de dezembro, às 18h</b>, pelo Microsoft Teams, com a Profa. Dra. Caren Vilela e a Profa. Dra. Isabela Rôças.</p>
+      <a class="btn btn-primary" href="https://teams.microsoft.com/meet/2492734985442316?p=iF8RjO2GB6PkTuUnWB" target="_blank" rel="noopener">Entrar na live</a>
+    </div>
+    <a href="https://teams.microsoft.com/meet/2492734985442316?p=iF8RjO2GB6PkTuUnWB" target="_blank" rel="noopener">
+      <img src="assets/live-0112-card.jpg" srcset="assets/live-0112-card-sm.jpg 540w, assets/live-0112-card.jpg 1080w" sizes="(max-width:900px) 90vw, 440px" width="1080" height="1350" alt="Card da live Muito além da sala de aula, com Caren Vilela e Isabela Rôças, terça, 1º de dezembro, às 18h. Clique para entrar na reunião">
+    </a>
+  </div>
+</section>
+
 <section class="ia" id="curso-ia" aria-labelledby="ia-titulo">
   <div class="wrap">
     <div>
@@ -463,7 +489,10 @@ footer a{color:#fff}
   else if(today<=end){dot.classList.add('open');txt.textContent='Inscrições abertas até 12/02/2027';}
   else{dot.classList.add('closed');txt.textContent='Inscrições encerradas em 12/02/2027';}
   var live=document.getElementById('live');
-  if(live && new Date()>new Date('2026-11-25T20:30:00-03:00')){live.hidden=true;}
+  if(new Date()>new Date('2026-12-01T20:30:00-03:00')){
+    if(live){live.hidden=true;}
+    var liveSec=document.getElementById('live-card'); if(liveSec){liveSec.hidden=true;}
+  }
   var ia=document.getElementById('curso-ia');
   if(ia && new Date()>new Date('2026-12-10T18:00:00-03:00')){ia.hidden=true;}
   var items=document.querySelectorAll('#timeline li'), marked=false;
